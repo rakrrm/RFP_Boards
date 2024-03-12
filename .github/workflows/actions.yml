@@ -1,0 +1,30 @@
+name: run main.ipynb
+
+on:
+  schedule:
+    - cron: '0 * * * *' # At the top of every hour
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12' # install the python version needed
+          
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install snowflake-connector-python
+          pip install snowflake-snowpark-python
+          
+      - name: execute py script # run main.ipynb
+        run: python main.ipynb
+          
+   
